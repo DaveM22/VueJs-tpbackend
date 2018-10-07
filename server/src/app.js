@@ -36,7 +36,7 @@ app.post('/equipos',(req,res) => {
       })
   })
 })
-
+//cambios
 app.get('/equipos',(req,res) =>{
     Equipo.find({}, function(err, equipos) {
         var equipoMap = {};
