@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Equipos from '@/components/Equipos'
-import NuevoEquipo from '@/components/NuevoEquipo'
+import FormularioEquipo from '@/components/FormularioEquipo'
 Vue.use(Router)
 
 export default new Router({
@@ -18,9 +18,16 @@ export default new Router({
       component: Equipos
     }
     ,
-    {path: '/equipos/nuevo',
-     name: 'NuevoEquipo',
-     component: NuevoEquipo
+    {
+     path: '/equipos/nuevo',
+     name: 'FormularioEquipo',
+     component: FormularioEquipo
+    },
+    {
+      path: '/equipos/:id',
+      name: 'EditarEquipo',
+      component: FormularioEquipo
     }
+
   ]
 })

@@ -39,9 +39,9 @@ app.post('/equipos',(req,res) => {
 //cambios
 app.get('/equipos',(req,res) =>{
     Equipo.find({}, function(err, equipos) {
-        var equipoMap = {};
+        var equipoMap = [];
         equipos.forEach(function(equipo) {
-          equipoMap[equipo._id] = equipo;
+          equipoMap.push(equipo)
         });
         console.log(equipoMap);
         res.send(equipoMap);
@@ -49,8 +49,34 @@ app.get('/equipos',(req,res) =>{
     
 })
 
+app.get('/equipo/:id', (req,res) =>{
+    var db = req.db;
+    Equipo.findById(req.params.id,'nombre', function (error,equipo){
+        if(error){console.error(error)}
+        res.send(equipo)
 
-app.listen(5000);
+    })
+})
+
+app.put('/equipos/:id', (req,res) => {
+    var db = req.db;
+
+    Equipo.findById(req.params.id,'nombre',function (error,equipo){
+        if (error) {console.error(error);}
+
+        equipo.nombre = req.body.nombre
+        equipo.save(function(error){
+            if(error){
+                console.log(error)
+            }
+            res.send({
+                success:true
+            })
+        })
+    })
+})
+
+app.listen(3000);
 
 
 

@@ -7,6 +7,14 @@ export default{
 
   agregarEquipo (params) {
     return Api().post('equipos', params)
+  },
+
+  actualizarEquipo(params){
+    return Api().put('equipos/'+params.id,params)
+  },
+
+  datosEquipo(params){
+    return Api().get('equipo/'+ params.id)
   }
 
 }

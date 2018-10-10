@@ -1,35 +1,46 @@
 <template>
-    <div class="Equipos">
-            <table>
-                <tr>
-                    <td>Nombre</td>
-                </tr>
-                <tbody>
-                    <tr v-for="equipo in equipos">
-                        <td>{{ equipo.nombre}}</td>           
-                    </tr>
-                </tbody>
-            </table>
-    </div>
+  <v-data-table
+    :headers="headers"
+    :items="desserts"
+    hide-actions
+    class="elevation-1"
+  >
+    <template slot="items" slot-scope="props">
+      
+      <td>{{ props.item.nombre }}</td>
+      <td>
+           <router-link v-bind:to="{ name: 'FormularioEquipo', params: { id: props.item._id } }">Edit</router-link>
+          <a href="http://" target="_blank" rel="noopener noreferrer">Borrar</a>
+      </td>
+    </template>
+  </v-data-table>
 </template>
 
 <script>
-import EquipoService from '@/services/EquipoService'
-export default {
-  name: 'Equipos',
-  data () {
-    return {
-      equipos: []
-    }
-  },
-  mounted () {
-      this.getEquipo()
-  },
-  methods: {
-      async getEquipo () {
-          const response = await EquipoService.listaEquipos()
-          this.equipos = response.data
+  import EquipoService from '@/services/EquipoService'
+  export default {
+    data () {
+      return {
+        headers: [
+          {
+            text: 'Nombre',
+            align: 'center',
+            sortable: true,
+            value: 'nombre'
+          },
+          { text: 'Acciones', value: '',align: 'center' },
+        ],
+        desserts: []
       }
+    },
+    mounted (){
+        this.Todos()
+    },
+    methods :{
+        async Todos(){
+            const response = await EquipoService.listaEquipos()
+            this.desserts = response.data
+        }
+    }
   }
-}
 </script>

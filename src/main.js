@@ -3,8 +3,11 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-
+import vuetify from 'vuetify'
+import vuegoodtable from 'vue-good-table'
 Vue.config.productionTip = false
+Vue.use(vuetify)
+
 
 /* eslint-disable no-new */
 new Vue({
@@ -13,3 +16,5 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+
+
