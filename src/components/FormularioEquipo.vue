@@ -1,51 +1,29 @@
 <template>
-    <div class="FormularioEquipo">
-        <label for="nombre">Nombre de equipo</label>
-        <input type="text" id="nombre" v-model="nombre"/>
-        <button @click="GuardarEquipo">Add</button>
-        <div id="app">
-  <v-app id="inspire">
-    <v-form ref="form" v-model="valid" lazy-validation>
-      <v-text-field
-        v-model="name"
-        :rules="nameRules"
-        :counter="10"
-        label="Name"
-        required
-      ></v-text-field>
-      <v-text-field
-        v-model="email"
-        :rules="emailRules"
-        label="E-mail"
-        required
-      ></v-text-field>
-      <v-select
-        v-model="select"
-        :items="items"
-        :rules="[v => !!v || 'Item is required']"
-        label="Item"
-        required
-      ></v-select>
-      <v-checkbox
-        v-model="checkbox"
-        :rules="[v => !!v || 'You must agree to continue!']"
-        label="Do you agree?"
-        required
-      ></v-checkbox>
-  
-      <v-btn
-        :disabled="!valid"
-        @click="submit"
-      >
-        submit
-      </v-btn>
-      <v-btn @click="clear">clear</v-btn>
-    </v-form>
-  </v-app>
-</div>
-    </div>
-
-
+<div class="FormularioEquipo">
+   <v-layout row justify-center>
+     <v-dialog v-model="dialog" persistent max-width="500px">
+       <v-btn slot="activator" color="primary" dark>Editar</v-btn>
+          <v-card>
+            <v-card-title> 
+              <span class="headline"></span>
+            </v-card-title>
+              <v-card-text>
+                <v-container grid-list-md>
+                  <v-flex xs12 sm6 md6>
+                    <v-text-field v-model="nombre" label="Nombre del equipo" required>
+                    </v-text-field>
+                  </v-flex>
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" flat @click.native="dialog = false">Cancelar</v-btn>
+                   <v-btn color="blue darken-1" flat @click.native="dialog = false">Guardar</v-btn>
+              </v-card-actions>
+          </v-card>
+     </v-dialog>
+   </v-layout>
+   </div>
 </template>
 
 <script>
@@ -54,9 +32,11 @@ export default {
   name: 'FormularioEquipo',
   data () {
     return {
-      nombre: ''
+      nombre: '',
+      dialog: false,
     }
   },
+  props: ['id'],
   mounted(){
      this.RealizarAccion();
   },
@@ -71,14 +51,14 @@ export default {
   
 
    RealizarAccion() {
-       if(this.$router.id !== null)
+       if(this.id !== null)
        {
            this.DatosEquipo()
        }
   },
 
   async GuardarEquipo(){
-      if(this.$router.id !== null)
+      if(this.id !== null)
        {
            this.ActualizarEquipo()
        }
@@ -88,7 +68,7 @@ export default {
   },
    async DatosEquipo() {
        const response = await EquipoService.datosEquipo({
-        id: this.$route.params.id
+        id: this.id
       })
 
       this.nombre = response.data.nombre
@@ -96,7 +76,7 @@ export default {
 
   async ActualizarEquipo () {
       await EquipoService.actualizarEquipo({
-          id: this.$route.params.id,
+          id: this.id,
           nombre: this.nombre
       })
       this.$router.push({name: 'Equipos'})
