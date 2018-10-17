@@ -17,8 +17,8 @@
               </v-card-text>
               <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" flat @click.native="dialog = false">Cancelar</v-btn>
-                   <v-btn color="blue darken-1" flat @click.native="dialog = false">Guardar</v-btn>
+                  <v-btn color="blue darken-1" flat @click="dialog = false">Cancelar</v-btn>
+                   <v-btn color="blue darken-1" flat @click="GuardarEquipo">Guardar</v-btn>
               </v-card-actions>
           </v-card>
      </v-dialog>
@@ -36,52 +36,48 @@ export default {
       dialog: false,
     }
   },
-  props: ['id'],
+  props: ['id','lista'],
   mounted(){
      this.RealizarAccion();
   },
   methods: {
     async agregarEquipo () {
-      await EquipoService.agregarEquipo({
+      const respuesta = await EquipoService.agregarEquipo({
           nombre : this.nombre
       })
-      this.$router.push({ name: 'Equipos'})
+      if(respuesta.data.success) 
+        this.lista.push({nombre:this.nombre})
+
   },
 
-  
-
    RealizarAccion() {
-       if(this.id !== null)
-       {
-           this.DatosEquipo()
-       }
+      if (this.id !== undefined) 
+        this.DatosEquipo()
   },
 
   async GuardarEquipo(){
-      if(this.id !== null)
-       {
-           this.ActualizarEquipo()
-       }
-       else{
-           this.agregarEquipo()
-       }
+      this.dialog = false
+      respuesta:Boolean
+      this.id !== undefined? this.ActualizarEquipo() : this.agregarEquipo()
+
   },
-   async DatosEquipo() {
+
+  async DatosEquipo() {
        const response = await EquipoService.datosEquipo({
         id: this.id
       })
 
       this.nombre = response.data.nombre
-   },
+     },
 
   async ActualizarEquipo () {
-      await EquipoService.actualizarEquipo({
+     const respuesta = await EquipoService.actualizarEquipo({
           id: this.id,
           nombre: this.nombre
       })
-      this.$router.push({name: 'Equipos'})
-  }
-
+    if(respuesta.data.success)
+        this.lista.find(x => x._id === this.id).nombre = this.nombre     
+    }
 }
 }
 </script>

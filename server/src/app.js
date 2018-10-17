@@ -29,12 +29,16 @@ app.post('/equipos',(req,res) => {
   
   new_equipo.save(function (error){
       if (error) {
-          console.log(error)
+          res.send({success:false, message:'Error al agregar equipo'})
       }
-      res.send({
-          success: true,
-          message: 'Agregado equipo correctamente'
-      })
+      else
+      {
+        res.send({
+            success: true,
+            message: 'Agregado equipo correctamente'
+        })
+      }
+
   })
 })
 
@@ -120,6 +124,18 @@ app.put('/equipos/:id', (req,res) => {
     })
 })
 
+app.delete('/equipos/:id', (req, res) => {
+    var db = req.db;
+    Equipo.remove({
+      _id: req.params.id
+    }, function(err, equipo){
+      if (err)
+        res.send(err)
+      res.send({
+        success: true
+      })
+    })
+  })
 
 
 app.put('/tipoeventos/:id',(req,res) => {

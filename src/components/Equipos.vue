@@ -1,6 +1,8 @@
 <template>
 <div>
-                  <formulario></formulario>
+                  <formulario v-bind:lista="desserts">
+
+                  </formulario>
 
   
 
@@ -12,8 +14,8 @@
     <template slot="items" slot-scope="props">
       <td>{{ props.item.nombre }}</td>
       <td>
-           <formulario v-bind:id="props.item._id"></formulario>
-          <a href="http://" target="_blank" rel="noopener noreferrer">Borrar</a>
+           <formulario v-bind:id="props.item._id" v-bind:lista="desserts"></formulario>
+          <v-btn color="blue darken-1" flat @click.native="Borrar(props.item._id)">Borrar</v-btn>
       </td>
     </template>
   </v-data-table>
@@ -43,7 +45,7 @@
         desserts: []
       }
     },
-    props: ['rows-per-page-text'],
+    props: ['id'],
     mounted (){
         this.Todos();
     },
@@ -51,6 +53,13 @@
         async Todos(){
             const response = await EquipoService.listaEquipos()
             this.desserts = response.data
+        },
+
+        async Borrar(idborrar){
+          const response = await EquipoService.borrarEquipo({
+            id: idborrar
+          })
+          this.Todos();
         }
     },
     components:{

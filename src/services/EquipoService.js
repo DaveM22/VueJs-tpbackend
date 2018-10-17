@@ -15,6 +15,10 @@ export default{
 
   datosEquipo(params){
     return Api().get('equipo/'+ params.id)
+  },
+
+  borrarEquipo(params){
+    return Api().delete('equipos/'+params.id)
   }
 
 }

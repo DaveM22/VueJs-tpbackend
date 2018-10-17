@@ -6,6 +6,7 @@ import FormularioEquipo from '@/components/FormularioEquipo'
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -16,17 +17,6 @@ export default new Router({
       path: '/equipos',
       name: 'Equipos',
       component: Equipos
-    }
-    ,
-    {
-     path: '/equipos/nuevo',
-     name: 'FormularioEquipo',
-     component: FormularioEquipo
-    },
-    {
-      path: '/equipos/:id',
-      name: 'EditarEquipo',
-      component: FormularioEquipo
     }
 
   ]
